@@ -30,8 +30,32 @@ From the _Essential Algorithms: A Practical Approach to Computer Algorithms_ boo
 
 # How to compile & run you program
 
-- _You must document compilation and execution here_
-- _Don't forget to document which algorithm you're implementing_
+The following instructions will compile and run a program that generates a Koch Curve at a specified depth. The end result is a text file that contains the pair of point coordinates for each line segment that comprise the Koch Curve. The execution command must contian the desired depth and the pair of point coordinates for the first line segment (think of it as the limits of the curve).
+
+**Compilation:**
+```
+g++ main.cpp
+```
+
+**Execution:**
+```
+./a.out <int depth> <int x1> < int y1> <int x2> <int y2>
+```
+
+**Running Graph Generator:**
+```
+python3 graph_generator.py
+```
+
+
+**Example of final result:**
+![alt text](example_figure_1.png)
+<center>Parameters: 5, 100, 600, 1000, 600</center>
+
+![alt text](example_figure_2.png)
+<center>Parameters: 3, 100, 700, 600, 700</center><br>
+
+
 
 # Grading Policy
 
