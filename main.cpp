@@ -38,12 +38,15 @@ void koch(double x1, double y1, double x2, double y2, int depth) {
 }
 
 int main(int argc, char* argv[]) {
+    
+    // Lanzamos excepción si no se introducen todos los parametros
     if (argc != 6) {
         cerr << "Uso: " << argv[0] << " <depth> <x1> <y1> <x2> <y2>\n";
         cerr << "Ejemplo: " << argv[0] << " 4 100 500 900 500\n";
         return 1;
     }
 
+    // Guardamos los parámetros iniciales
     int depth = stoi(argv[1]);
     double x1 = stod(argv[2]);
     double y1 = stod(argv[3]);
