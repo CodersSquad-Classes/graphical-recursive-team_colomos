@@ -10,13 +10,13 @@
  * with four segments forming a triangular bump.
  */
 
- using namespace std;
+#include <iostream> // For standard I/O operations
+#include <fstream> // For file operations
+#include <cmath> // For mathematical functions
+#include <string> // For string manipulation
+#include <stdexcept> // For exception handling
 
-#include <iostream>
-#include <fstream>
-#include <cmath>
-#include <string>
-#include <stdexcept>
+using namespace std;
 
 // Constants for canvas dimensions
 const int CANVAS_WIDTH = 1024;
@@ -29,7 +29,7 @@ const string OUTPUT_FILE = "lines.txt";
  * @param y Y coordinate to validate
  * @return true if coordinates are within bounds, false otherwise
  */
-bool isWithinCanvas(double x, double y) {
+bool isWithinCanvas(double x, double y) { // Check if coordinates are within the defined canvas size
     return (x >= 0 && x < CANVAS_WIDTH && y >= 0 && y < CANVAS_HEIGHT);
 }
 
@@ -37,9 +37,9 @@ bool isWithinCanvas(double x, double y) {
  * @brief Validates input parameters
  * @param depth Recursion depth (must be >= 0)
  * @param x1, y1, x2, y2 Coordinates of the initial line segment
- * @throws std::invalid_argument if parameters are invalid
+ * @throws invalid_argument if parameters are invalid
  */
-void validateParameters(int depth, double x1, double y1, double x2, double y2) {
+void validateParameters(int depth, double x1, double y1, double x2, double y2) { //
     if (depth < 0) {
         throw invalid_argument("Depth must be non-negative");
     }
@@ -133,7 +133,7 @@ void printUsage(const string& programName) {
  * @return 0 on success, 1 on error
  */
 int main(int argc, char* argv[]) {
-    try {
+    try { // Main try-catch block to handle exceptions
         // Check for correct number of arguments
         if (argc != 6) {
             printUsage(argv[0]);
@@ -141,17 +141,17 @@ int main(int argc, char* argv[]) {
         }
         
         // Parse command line arguments
-        int depth = stoi(argv[1]);
-        double x1 = stod(argv[2]);
-        double y1 = stod(argv[3]);
-        double x2 = stod(argv[4]);
-        double y2 = stod(argv[5]);
+        int depth = stoi(argv[1]); // Convert depth argument to integer, stoi throws exceptions on invalid input
+        double x1 = stod(argv[2]); // Convert x1 argument to double, stod throws exceptions on invalid input
+        double y1 = stod(argv[3]); // Convert y1 argument to double, stod throws exceptions on invalid input
+        double x2 = stod(argv[4]); // Convert x2 argument to double, stod throws exceptions on invalid input
+        double y2 = stod(argv[5]); // Convert y2 argument to double, stod throws exceptions on invalid input
 
         // Validate input parameters
-        validateParameters(depth, x1, y1, x2, y2);
+        validateParameters(depth, x1, y1, x2, y2); // Throws invalid_argument on failure
         
         // Open output file for writing
-        ofstream outfile(OUTPUT_FILE, ios::trunc);
+        ofstream outfile(OUTPUT_FILE, ios::trunc); // ofstream is used to create and write to files, outfile is the output file stream
         if (!outfile.is_open()) {
             throw runtime_error("Unable to open output file: " + OUTPUT_FILE);
         }
@@ -168,17 +168,17 @@ int main(int argc, char* argv[]) {
 
         return 0;
 
-    } catch (const invalid_argument& e) {
+    } catch (const invalid_argument& e) { // Catch invalid argument exceptions from stoi/stod and validation
         cerr << "Error: Invalid argument - " << e.what() << "\n\n";
         printUsage(argv[0]);
         return 1;
 
-    } catch (const out_of_range& e) {
+    } catch (const out_of_range& e) { // Catch out of range exceptions from stoi/stod
         cerr << "Error: Number out of range - " << e.what() << "\n\n";
         printUsage(argv[0]);
         return 1;
 
-    } catch (const exception& e) {
+    } catch (const exception& e) { // Catch all other standard exceptions
         cerr << "Error: " << e.what() << "\n";
         return 1;
     }
