@@ -10,6 +10,8 @@
  * with four segments forming a triangular bump.
  */
 
+ using namespace std;
+
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -19,7 +21,7 @@
 // Constants for canvas dimensions
 const int CANVAS_WIDTH = 1024;
 const int CANVAS_HEIGHT = 1024;
-const std::string OUTPUT_FILE = "lines.txt";
+const string OUTPUT_FILE = "lines.txt";
 
 /**
  * @brief Validates that coordinates are within the canvas bounds
@@ -39,15 +41,15 @@ bool isWithinCanvas(double x, double y) {
  */
 void validateParameters(int depth, double x1, double y1, double x2, double y2) {
     if (depth < 0) {
-        throw std::invalid_argument("Depth must be non-negative");
+        throw invalid_argument("Depth must be non-negative");
     }
     
     if (!isWithinCanvas(x1, y1) || !isWithinCanvas(x2, y2)) {
-        throw std::invalid_argument("Coordinates must be within canvas bounds (0-1023, 0-1023)");
+        throw invalid_argument("Coordinates must be within canvas bounds (0-1023, 0-1023)");
     }
     
     if (depth > 8) {
-        std::cout << "Warning: High depth values may generate very large files and take long processing time.\n";
+        cout << "Warning: High depth values may generate very large files and take long processing time.\n";
     }
 }
 
@@ -65,7 +67,7 @@ void validateParameters(int depth, double x1, double y1, double x2, double y2) {
  * @param x2, y2 Ending point coordinates  
  * @param depth Recursion depth (0 = base case, draw line)
  */
-void generateKochCurve(std::ofstream& outfile, double x1, double y1, double x2, double y2, int depth) {
+void generateKochCurve(ofstream& outfile, double x1, double y1, double x2, double y2, int depth) {
     if (depth == 0) {
         // Base case: write the line segment to output file
         // Cast to int for cleaner output (pixel coordinates)
@@ -91,9 +93,9 @@ void generateKochCurve(std::ofstream& outfile, double x1, double y1, double x2, 
     // Point Peak: The tip of the equilateral triangle
     // This point is calculated by rotating the vector AB by 60 degrees
     // and scaling it to form an equilateral triangle
-    double xPeak = (xA + xB) / 2.0 - std::sqrt(3.0) * (yB - yA) / 2.0;
-    double yPeak = (yA + yB) / 2.0 + std::sqrt(3.0) * (xB - xA) / 2.0;
-    
+    double xPeak = (xA + xB) / 2.0 - sqrt(3.0) * (yB - yA) / 2.0;
+    double yPeak = (yA + yB) / 2.0 + sqrt(3.0) * (xB - xA) / 2.0;
+
     // Recursive calls for the four new segments:
     // 1. From start to point A
     generateKochCurve(outfile, x1, y1, xA, yA, depth - 1);
@@ -112,16 +114,16 @@ void generateKochCurve(std::ofstream& outfile, double x1, double y1, double x2, 
  * @brief Displays program usage information
  * @param programName Name of the program executable
  */
-void printUsage(const std::string& programName) {
-    std::cerr << "Usage: " << programName << " <depth> <x1> <y1> <x2> <y2>\n\n";
-    std::cerr << "Parameters:\n";
-    std::cerr << "  depth  : Recursion depth (0-8 recommended, higher values create very large files)\n";
-    std::cerr << "  x1, y1 : Starting point coordinates (0-1023)\n";
-    std::cerr << "  x2, y2 : Ending point coordinates (0-1023)\n\n";
-    std::cerr << "Examples:\n";
-    std::cerr << "  " << programName << " 4 100 500 900 500    # Horizontal Koch curve\n";
-    std::cerr << "  " << programName << " 3 200 200 800 600    # Diagonal Koch curve\n\n";
-    std::cerr << "Output: Generated line segments will be saved to '" << OUTPUT_FILE << "'\n";
+void printUsage(const string& programName) {
+    cerr << "Usage: " << programName << " <depth> <x1> <y1> <x2> <y2>\n\n";
+    cerr << "Parameters:\n";
+    cerr << "  depth  : Recursion depth (0-8 recommended, higher values create very large files)\n";
+    cerr << "  x1, y1 : Starting point coordinates (0-1023)\n";
+    cerr << "  x2, y2 : Ending point coordinates (0-1023)\n\n";
+    cerr << "Examples:\n";
+    cerr << "  " << programName << " 4 100 500 900 500    # Horizontal Koch curve\n";
+    cerr << "  " << programName << " 3 200 200 800 600    # Diagonal Koch curve\n\n";
+    cerr << "Output: Generated line segments will be saved to '" << OUTPUT_FILE << "'\n";
 }
 
 /**
@@ -139,45 +141,45 @@ int main(int argc, char* argv[]) {
         }
         
         // Parse command line arguments
-        int depth = std::stoi(argv[1]);
-        double x1 = std::stod(argv[2]);
-        double y1 = std::stod(argv[3]);
-        double x2 = std::stod(argv[4]);
-        double y2 = std::stod(argv[5]);
-        
+        int depth = stoi(argv[1]);
+        double x1 = stod(argv[2]);
+        double y1 = stod(argv[3]);
+        double x2 = stod(argv[4]);
+        double y2 = stod(argv[5]);
+
         // Validate input parameters
         validateParameters(depth, x1, y1, x2, y2);
         
         // Open output file for writing
-        std::ofstream outfile(OUTPUT_FILE, std::ios::trunc);
+        ofstream outfile(OUTPUT_FILE, ios::trunc);
         if (!outfile.is_open()) {
-            throw std::runtime_error("Unable to open output file: " + OUTPUT_FILE);
+            throw runtime_error("Unable to open output file: " + OUTPUT_FILE);
         }
         
         // Generate Koch curve
-        std::cout << "Generating Koch curve with depth " << depth << "...\n";
+        cout << "Generating Koch curve with depth " << depth << "...\n";
         generateKochCurve(outfile, x1, y1, x2, y2, depth);
         
         // Clean up
         outfile.close();
-        
-        std::cout << "Koch curve successfully generated and saved to '" << OUTPUT_FILE << "'\n";
-        std::cout << "Use 'python3 graph_generator.py' to visualize the result.\n";
-        
+
+        cout << "Koch curve successfully generated and saved to '" << OUTPUT_FILE << "'\n";
+        cout << "Use 'python3 graph_generator.py' to visualize the result.\n";
+
         return 0;
-        
-    } catch (const std::invalid_argument& e) {
-        std::cerr << "Error: Invalid argument - " << e.what() << "\n\n";
+
+    } catch (const invalid_argument& e) {
+        cerr << "Error: Invalid argument - " << e.what() << "\n\n";
         printUsage(argv[0]);
         return 1;
-        
-    } catch (const std::out_of_range& e) {
-        std::cerr << "Error: Number out of range - " << e.what() << "\n\n";
+
+    } catch (const out_of_range& e) {
+        cerr << "Error: Number out of range - " << e.what() << "\n\n";
         printUsage(argv[0]);
         return 1;
-        
-    } catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << "\n";
+
+    } catch (const exception& e) {
+        cerr << "Error: " << e.what() << "\n";
         return 1;
     }
 }
